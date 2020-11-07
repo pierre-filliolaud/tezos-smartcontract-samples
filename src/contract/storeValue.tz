@@ -1,0 +1,14 @@
+import smartpy as sp
+class StoreValue(sp.Contract):
+    def __init__(self, value):
+        self.init(storedValue = value)
+    @sp.entry_point
+    def replace(self, params):
+        self.data.storedValue = params.value
+    @sp.entry_point
+    def double(self, params):
+        self.data.storedValue = self.data.storedValue * 2
+    @sp.entry_point
+    def divide(self, params):
+        sp.verify(params.divisor != 0)
+        self.data.storedValue = self.data.storedValue / params.divisor
