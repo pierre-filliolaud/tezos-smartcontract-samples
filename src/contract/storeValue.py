@@ -1,8 +1,19 @@
+# importing the library SmartPy
 import smartpy as sp
 
+# class definition which inherits from sp.Contract
 class StoreValue(sp.Contract):
+    # __init__ constructor which will call self.init() in order to, 
+    # as we can see from the name of the function, initialize all 
+    # the fields we have in our contract’s storage.
     def __init__(self, value):
-        self.init(storedValue = value)
+        self.init(
+            # initializing field storedValue
+            storedValue = value
+            )
+
+    # An entry point is a method of a contract class 
+    # that can be called from the outside
     @sp.entry_point
     def replace(self, params):
         self.data.storedValue = params
