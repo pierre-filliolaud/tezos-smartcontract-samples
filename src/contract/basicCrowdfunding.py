@@ -36,7 +36,7 @@ def test():
     Elie = sp.test_account("Elie")
     
     scenario.h3("Alice participates in the crowdfunding")
-    scenario += c1.addFunds().run(sender = Alice, amount = sp.tez(100))
+    scenario += c1.addFunds().run(sender = Alice, amount = sp.mutez(123099999001103))
     
     scenario.h3("Bob participates in the crowdfunding")
     scenario += c1.addFunds().run(sender = Bob, amount = sp.tez(35))
