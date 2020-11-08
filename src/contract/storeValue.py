@@ -16,14 +16,20 @@ class StoreValue(sp.Contract):
     # that can be called from the outside
     @sp.entry_point
     def replace(self, params):
-        self.data.storedValue = params
+        self.data.storedValue = params.value
+
     @sp.entry_point
     def double(self):
         self.data.storedValue = self.data.storedValue * 2
+
     @sp.entry_point
     def divide(self, params):
-        sp.verify(params != 0)
-        self.data.storedValue = self.data.storedValue / params
+        sp.verify(params.value != 0)
+        self.data.storedValue = self.data.storedValue / params.value
+
+    @sp.entryPoint
+    def computeSum(self, params):
+        self.data.storedValue = params.augend + params.addend
 
 # Tests   
 @sp.add_test(name = "Test Store Value")
@@ -32,11 +38,13 @@ def test():
     scenario.h1("Test Store Value")
     
     # We first define a contract and add it to the scenario
-    c1 = StoreValue(12)
-    scenario += c1 
-    scenario += c1.double()
-    scenario += c1.replace(4)
-    scenario += c1.divide(3)
+    contract = StoreValue(12)
+    scenario += contract 
+    scenario += contract.double()
+    scenario += contract.replace(value=4)
+    scenario += contract.divide(value=3).run(sender = sp.address("tz1234"))
     
     # Finally, we check its final storage
-    scenario.verify(c1.data.storedValue == 1)
+    scenario.verify(contract.data.storedValue == 1)
+
+    scenario += contract.computeSum(augend = 1, addend = 2).run(sender = sp.address("tz1234"))
